@@ -42,11 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILoanCalculator.cs" />
     <Compile Include="LoanQuoteCalculator.cs" />
     <Compile Include="Models\LoanOffer.cs" />
     <Compile Include="Models\LoanResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleLoanCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

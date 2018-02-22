@@ -7,26 +7,26 @@ namespace QuoteCalculator
 	public class LoanQuoteCalculator
 	{
 		private readonly IEnumerable<LoanOffer> _loanOffers;
+		private readonly ILoanCalculator _calculator;
 
-		public LoanQuoteCalculator(IEnumerable<LoanOffer> loanOffers)
+		public LoanQuoteCalculator(IEnumerable<LoanOffer> loanOffers, ILoanCalculator calculator)
 		{
 			_loanOffers = loanOffers;
+			_calculator = calculator;
 		}
 
 		public LoanQuote GetQuote(int loanAmount, int loanMonths)
 		{
-			var firstLoanOffer = _loanOffers.First();
-
-			var interestRate = firstLoanOffer.Rate;
-			var totalRepayment = loanMonths == 0 ? 0 : firstLoanOffer.Amount;
-			var monthlyRepayment = loanMonths == 0 ? 0 : totalRepayment / loanMonths;
+			var monthlyPayment = _loanOffers.Sum(o => _calculator.CalculateMonthlyPayment(o.Amount, o.Rate, loanMonths));
+			var totalPayment = _calculator.CalculateTotalPayment(monthlyPayment, loanMonths);
+			var interestRate = _calculator.CalculateInterestRate(loanAmount, monthlyPayment, loanMonths);
 
 			return new LoanQuote
 			{
 				LoanAmount = loanAmount,
 				InterestRate = interestRate,
-				MonthlyRepayment = monthlyRepayment,
-				TotalRepayment = totalRepayment
+				MonthlyRepayment = monthlyPayment,
+				TotalRepayment = totalPayment
 			};
 		}
 	}

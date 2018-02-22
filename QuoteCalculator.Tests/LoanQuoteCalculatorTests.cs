@@ -8,6 +8,13 @@ namespace QuoteCalculator.Tests
 	[TestClass]
 	public class LoanQuoteCalculatorTests
 	{
+		ILoanCalculator _calculator = new SimpleLoanCalculator();
+
+		[TestInitialize]
+		public void Initialize()
+		{
+		}
+
 		[TestMethod]
 		public void GetCorrectQuote_ZeroLoanAmountAndZeroLoanMonths()
 		{
@@ -16,19 +23,18 @@ namespace QuoteCalculator.Tests
 			var loanOffers = new[] {
 				new LoanOffer
 				{
-					LenderName = "Test",
-					Amount = 100,
-					Rate = 0.075M,
+					Amount = 200,
+					Rate = 0.12M,
 				}
 			};
-			var calculator = new LoanQuoteCalculator(loanOffers);
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
 
-			var quoteResult = calculator.GetQuote(loanAmount, loanMonths);
+			var result = calculator.GetQuote(loanAmount, loanMonths);
 
-			Assert.AreEqual(100, quoteResult.LoanAmount, "Incorrect loan amount");
-			Assert.AreEqual(0.075M, quoteResult.InterestRate, "Incorrect interest rate");
-			Assert.AreEqual(0, quoteResult.MonthlyRepayment, "Incorrect monthly repayment");
-			Assert.AreEqual(0, quoteResult.TotalRepayment, "Incorrect total amount");
+			Assert.AreEqual(100, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(0, result.MonthlyRepayment, "Incorrect monthly repayment");
+			Assert.AreEqual(0, result.TotalRepayment, "Incorrect total amount");
 		}
 
 		[TestMethod]
@@ -39,19 +45,126 @@ namespace QuoteCalculator.Tests
 			var loanOffers = new[] {
 				new LoanOffer
 				{
-					LenderName = "Test",
-					Amount = 100,
-					Rate = 0.075M,
+					Amount = 200,
+					Rate = 0.12M,
 				}
 			};
-			var calculator = new LoanQuoteCalculator(loanOffers);
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
 
-			var quoteResult = calculator.GetQuote(loanAmount, loanMonths);
+			var result = calculator.GetQuote(loanAmount, loanMonths);
 
-			Assert.AreEqual(100, quoteResult.LoanAmount);
-			Assert.AreEqual(0.075M, quoteResult.InterestRate);
-			Assert.AreEqual(100, quoteResult.MonthlyRepayment);
-			Assert.AreEqual(100, quoteResult.TotalRepayment);
+			Assert.AreEqual(100, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0.12M, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(101, result.MonthlyRepayment, "Incorrect monthly repayment");
+			Assert.AreEqual(101, result.TotalRepayment, "Incorrect total amount");
+		}
+
+		[TestMethod]
+		public void GetCorrectQuote_TwoIdenticalOffersAndOneMonth()
+		{
+			var loanAmount = 200;
+			var loanMonths = 1;
+			var loanOffers = new[] {
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.12M,
+				},
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.12M
+				}
+			};
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
+
+			var result = calculator.GetQuote(loanAmount, loanMonths);
+
+			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0.12M, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(202, result.MonthlyRepayment, "Incorrect monthly repayment");
+			Assert.AreEqual(202, result.TotalRepayment, "Incorrect total amount");
+		}
+
+		[TestMethod]
+		public void GetCorrectQuote_TwoDifferentOffersAndOneMonth()
+		{
+			var loanAmount = 200;
+			var loanMonths = 1;
+			var loanOffers = new[] {
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.12M,
+				},
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.24M
+				}
+			};
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
+
+			var result = calculator.GetQuote(loanAmount, loanMonths);
+
+			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0.18M, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(203, result.MonthlyRepayment, "Incorrect monthly repayment");
+			Assert.AreEqual(203, result.TotalRepayment, "Incorrect total amount");
+		}
+
+		[TestMethod]
+		public void GetCorrectQuote_TwoDifferentOffersAndTwelveMonths()
+		{
+			var loanAmount = 200;
+			var loanMonths = 12;
+			var loanOffers = new[] {
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.12M,
+				},
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.24M
+				}
+			};
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
+
+			var result = calculator.GetQuote(loanAmount, loanMonths);
+
+			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0.18M, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(19.67M, Math.Round(result.MonthlyRepayment, 2), "Incorrect monthly repayment");
+			Assert.AreEqual(236M, Math.Round(result.TotalRepayment), "Incorrect total amount");
+		}
+
+		[TestMethod]
+		public void GetCorrectQuote_TwoOffersOneIncomplete()
+		{
+			var loanAmount = 200;
+			var loanMonths = 12;
+			var loanOffers = new[] {
+				new LoanOffer
+				{
+					Amount = 100,
+					Rate = 0.12M,
+				},
+				new LoanOffer
+				{
+					Amount = 200,
+					Rate = 0.24M
+				}
+			};
+			var calculator = new LoanQuoteCalculator(loanOffers, _calculator);
+
+			var result = calculator.GetQuote(loanAmount, loanMonths);
+
+			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
+			Assert.AreEqual(0.18M, result.InterestRate, "Incorrect interest rate");
+			Assert.AreEqual(19.67M, Math.Round(result.MonthlyRepayment, 2), "Incorrect monthly repayment");
+			Assert.AreEqual(236M, Math.Round(result.TotalRepayment), "Incorrect total amount");
 		}
 	}
 }
