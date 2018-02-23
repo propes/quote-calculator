@@ -1,9 +1,8 @@
-﻿using System;
+﻿using QuoteCalculator.Exceptions;
 using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
 using System.Collections.Generic;
 using System.Linq;
-using QuoteCalculator.Exceptions;
 
 namespace QuoteCalculator
 {

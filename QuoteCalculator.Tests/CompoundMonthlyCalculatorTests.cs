@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QuoteCalculator.Calculators;
 using QuoteCalculator.Interfaces;
 using System;
-using QuoteCalculator.Calculators;
 
 namespace QuoteCalculator.Tests
 {

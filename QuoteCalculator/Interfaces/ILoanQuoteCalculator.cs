@@ -2,7 +2,7 @@
 
 namespace QuoteCalculator.Interfaces
 {
-	public interface ILoanQuoteCalculator
+	public interface ILoanQuoteGenerator
 	{
 		LoanQuote GetQuote(double loanAmount, double loanMonths);
 	}

@@ -1,16 +1,15 @@
-﻿using QuoteCalculator.Models;
-using System.Collections.Generic;
+﻿using QuoteCalculator.Interfaces;
+using QuoteCalculator.Models;
 using System.Linq;
-using QuoteCalculator.Interfaces;
 
 namespace QuoteCalculator
 {
-	public class LoanQuoteCalculator : ILoanQuoteCalculator
+	public class LoanQuoteGenerator : ILoanQuoteGenerator
 	{
 		private readonly ILoanAllocationProvider loanAllocationProvider;
 		private readonly ILoanCalculator calculator;
 
-		public LoanQuoteCalculator(ILoanAllocationProvider loanAllocationProvider, ILoanCalculator calculator)
+		public LoanQuoteGenerator(ILoanAllocationProvider loanAllocationProvider, ILoanCalculator calculator)
 		{
 			this.loanAllocationProvider = loanAllocationProvider;
 			this.calculator = calculator;

@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuoteCalculator.Repositories;
+using System;
 using System.Linq;
 
 namespace QuoteCalculator.Tests
@@ -8,7 +8,7 @@ namespace QuoteCalculator.Tests
 	[TestClass()]
 	public class LoanOfferCsvRepositoryTests
 	{
-		private const string Testfilepath = "TestFiles\\Market Data for Exercise.csv";
+		private const string Testfilepath = "TestFiles\\testfile.csv";
 
 		[TestMethod()]
 		public void GetLoanOffers_FileInCorrectFormat()

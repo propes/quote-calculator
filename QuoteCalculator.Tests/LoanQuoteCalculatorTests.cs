@@ -1,10 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using QuoteCalculator.Models;
-using System;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using QuoteCalculator.Calculators;
 using QuoteCalculator.Interfaces;
+using QuoteCalculator.Models;
+using System;
 
 namespace QuoteCalculator.Tests
 {
@@ -13,12 +12,6 @@ namespace QuoteCalculator.Tests
 	{
 		private readonly ILoanCalculator calculator = new SimpleLoanCalculator();
 		private readonly Mock<ILoanAllocationProvider> mockAllocationProvider = new Mock<ILoanAllocationProvider>();
-
-		[TestInitialize]
-		public void Initialize()
-		{
-			
-		}
 
 		[TestMethod]
 		public void GetCorrectQuote_ZeroLoanAmountAndZeroLoanMonths()
@@ -32,7 +25,7 @@ namespace QuoteCalculator.Tests
 					}
 				});
 
-			var quoteCalculator = new LoanQuoteCalculator(mockAllocationProvider.Object, calculator);
+			var quoteCalculator = new LoanQuoteGenerator(mockAllocationProvider.Object, calculator);
 
 			var result = quoteCalculator.GetQuote(100, 0);
 
@@ -54,7 +47,7 @@ namespace QuoteCalculator.Tests
 					}
 				});
 
-			var quoteCalculator = new LoanQuoteCalculator(mockAllocationProvider.Object, calculator);
+			var quoteCalculator = new LoanQuoteGenerator(mockAllocationProvider.Object, calculator);
 
 			var result = quoteCalculator.GetQuote(100, 1);
 
@@ -81,7 +74,7 @@ namespace QuoteCalculator.Tests
 					}
 				});
 
-			var quoteCalculator = new LoanQuoteCalculator(mockAllocationProvider.Object, calculator);
+			var quoteCalculator = new LoanQuoteGenerator(mockAllocationProvider.Object, calculator);
 
 			var result = quoteCalculator.GetQuote(200, 1);
 
@@ -108,7 +101,7 @@ namespace QuoteCalculator.Tests
 					}
 				});
 
-			var quoteCalculator = new LoanQuoteCalculator(mockAllocationProvider.Object, calculator);
+			var quoteCalculator = new LoanQuoteGenerator(mockAllocationProvider.Object, calculator);
 
 			var result = quoteCalculator.GetQuote(200, 1);
 
@@ -135,7 +128,7 @@ namespace QuoteCalculator.Tests
 					}
 				});
 
-			var quoteCalculator = new LoanQuoteCalculator(mockAllocationProvider.Object, calculator);
+			var quoteCalculator = new LoanQuoteGenerator(mockAllocationProvider.Object, calculator);
 
 			var result = quoteCalculator.GetQuote(200, 12);
 

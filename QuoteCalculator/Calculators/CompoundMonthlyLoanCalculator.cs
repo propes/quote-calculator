@@ -1,5 +1,5 @@
-﻿using System;
-using QuoteCalculator.Interfaces;
+﻿using QuoteCalculator.Interfaces;
+using System;
 
 namespace QuoteCalculator.Calculators
 {

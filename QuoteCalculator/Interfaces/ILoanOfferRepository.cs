@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using QuoteCalculator.Models;
+﻿using QuoteCalculator.Models;
+using System.Collections.Generic;
 
 namespace QuoteCalculator.Interfaces
 {
