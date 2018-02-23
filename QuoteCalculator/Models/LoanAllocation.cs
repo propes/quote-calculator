@@ -1,6 +1,6 @@
 ﻿namespace QuoteCalculator.Models
 {
-	public class LoanOffer
+	public class LoanAllocation
 	{
 		public string LenderName { get; set; }
 		public decimal Rate { get; set; }

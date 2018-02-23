@@ -1,25 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using QuoteCalculator.Models;
+using System.Collections.Generic;
 using System.Linq;
-using QuoteCalculator.Models;
+using QuoteCalculator.Interfaces;
 
 namespace QuoteCalculator
 {
-	public class LoanQuoteCalculator
+	public class LoanQuoteCalculator : ILoanQuoteCalculator
 	{
-		private readonly IEnumerable<LoanOffer> _loanOffers;
-		private readonly ILoanCalculator _calculator;
+		private readonly IEnumerable<LoanAllocation> loanAllocations;
+		private readonly ILoanCalculator calculator;
 
-		public LoanQuoteCalculator(IEnumerable<LoanOffer> loanOffers, ILoanCalculator calculator)
+		public LoanQuoteCalculator(ILoanAllocationProvider loanAllocationProvider, ILoanCalculator calculator)
 		{
-			_loanOffers = loanOffers;
-			_calculator = calculator;
+			this.loanAllocations = loanAllocationProvider.GetLoanAllocations();
+			this.calculator = calculator;
 		}
 
-		public LoanQuote GetQuote(int loanAmount, int loanMonths)
+		public LoanQuote GetQuoteForMonths(int loanMonths)
 		{
-			var monthlyPayment = _loanOffers.Sum(o => _calculator.CalculateMonthlyPayment(o.Amount, o.Rate, loanMonths));
-			var totalPayment = _calculator.CalculateTotalPayment(monthlyPayment, loanMonths);
-			var interestRate = _calculator.CalculateInterestRate(loanAmount, monthlyPayment, loanMonths);
+			var loanAmount = this.loanAllocations.Sum(o => o.Amount);
+			var monthlyPayment = this.loanAllocations.Sum(o => calculator.CalculateMonthlyPayment(o.Amount, o.Rate, loanMonths));
+			var totalPayment = calculator.CalculateTotalPayment(monthlyPayment, loanMonths);
+			var interestRate = calculator.CalculateInterestRate(loanAmount, monthlyPayment, loanMonths);
 
 			return new LoanQuote
 			{

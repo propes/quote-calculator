@@ -1,6 +1,4 @@
-﻿using QuoteCalculator.Models;
-
-namespace QuoteCalculator
+﻿namespace QuoteCalculator.Interfaces
 {
 	public interface ILoanCalculator
 	{
