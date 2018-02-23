@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using Autofac;
+using QuoteCalculator.Composition;
 using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
 
@@ -7,18 +9,19 @@ namespace QuoteCalculator
 {
 	class Program
 	{
+		private static readonly int LoanMonths = int.Parse(ConfigurationManager.AppSettings["LoanMonths"]);
+
 		static void Main(string[] args)
 		{
-			ParseArgs(args, out var filename, out var loanMonths);
+			ParseArgs(args, out var filename, out var loanAmount);
 
 			var iocContainer = IocComposition.Compose();
 
-			var quoteCalculator = iocContainer.Resolve<ILoanQuoteCalculator>();
-
-			LoanQuote quote = null;
+			LoanQuote quote;
 			try
 			{
-				quote = quoteCalculator.GetQuoteForMonths(loanMonths);
+				var quoteCalculator = iocContainer.Resolve<ILoanQuoteCalculator>();
+				quote = quoteCalculator.GetQuote(loanAmount, LoanMonths);
 			}
 			catch (Exception e)
 			{
@@ -29,9 +32,9 @@ namespace QuoteCalculator
 			iocContainer.Resolve<IQuotePrinter>().Print(quote);
 		}
 
-		static void ParseArgs(string[] args, out string filename, out int loanMonths)
+		static void ParseArgs(string[] args, out string filename, out int loanAmount)
 		{
-			loanMonths = 36;
+			loanAmount = 0;
 			filename = string.Empty;
 		}
 	}

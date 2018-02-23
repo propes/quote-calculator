@@ -1,8 +1,8 @@
-﻿using System;
-using QuoteCalculator.Interfaces;
+﻿using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
+using System;
 
-namespace QuoteCalculator
+namespace QuoteCalculator.Printing
 {
 	public class ConsoleQuotePrinter : IQuotePrinter
 	{

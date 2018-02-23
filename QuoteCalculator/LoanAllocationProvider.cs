@@ -1,24 +1,57 @@
-﻿using QuoteCalculator.Interfaces;
+﻿using System;
+using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
 using System.Collections.Generic;
 using System.Linq;
+using QuoteCalculator.Exceptions;
 
 namespace QuoteCalculator
 {
 	public class LoanAllocationProvider : ILoanAllocationProvider
 	{
-		private readonly ILoanOfferRepository loanOfferRepository;
+		private readonly IEnumerable<LoanOffer> loanOffers;
 
 		public LoanAllocationProvider(ILoanOfferRepository loanOfferRepository)
 		{
-			this.loanOfferRepository = loanOfferRepository;
+			this.loanOffers = loanOfferRepository.GetLoanOffers();
 		}
 
-		public IEnumerable<LoanAllocation> GetLoanAllocations()
+		public bool FundsAreAvailable(double loanAmount)
 		{
-			var offers = this.loanOfferRepository.GetLoanOffers();
+			var totalAmountOffered = loanOffers.Sum(l => l.Amount);
+			return loanAmount <= totalAmountOffered;
+		}
 
-			return Enumerable.Empty<LoanAllocation>();
+		public IEnumerable<LoanAllocation> GetLoanAllocationsForAmount(double loanAmount)
+		{
+			if (!FundsAreAvailable(loanAmount))
+			{
+				throw new FundsNotAvailableException();
+			}
+
+			var sortedLoanOffers = loanOffers.OrderBy(l => l.Rate);
+			var loanAllocations = new List<LoanAllocation>();
+			var amountRemaining = loanAmount;
+
+			foreach (var loanOffer in sortedLoanOffers)
+			{
+				if (loanOffer.Amount <= amountRemaining)
+				{
+					loanAllocations.Add(new LoanAllocation { Amount = loanOffer.Amount, Rate = loanOffer.Rate });
+					amountRemaining -= loanOffer.Amount;
+				}
+				else if (amountRemaining > 0)
+				{
+					loanAllocations.Add(new LoanAllocation { Amount = amountRemaining, Rate = loanOffer.Rate });
+					break;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			return loanAllocations;
 		}
 	}
 }

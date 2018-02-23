@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using QuoteCalculator.Calculators;
+using QuoteCalculator.Printing;
+using QuoteCalculator.Repositories;
 
-namespace QuoteCalculator
+namespace QuoteCalculator.Composition
 {
 	public class IocComposition
 	{

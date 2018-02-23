@@ -61,12 +61,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompoundMonthlyLoanCalculatorTests.cs" />
+    <Compile Include="CompoundMonthlyCalculatorTests.cs" />
+    <Compile Include="LoanAllocationProviderTest.cs" />
+    <Compile Include="LoanOfferRepositoryTests.cs" />
     <Compile Include="LoanQuoteCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestFiles\Market Data for Exercise.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuoteCalculator\QuoteCalculator.csproj">
