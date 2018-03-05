@@ -15,7 +15,7 @@ namespace QuoteCalculator
 			this.calculator = calculator;
 		}
 
-		public LoanQuote GetQuote(double loanAmount, double loanMonths)
+		public LoanQuote GetQuote(decimal loanAmount, decimal loanMonths)
 		{
 			var loanAllocations = loanAllocationProvider.GetLoanAllocationsForAmount(loanAmount);
 			var monthlyPayment = loanAllocations.Sum(o => calculator.CalculateMonthlyPayment(o.Amount, o.Rate, loanMonths));

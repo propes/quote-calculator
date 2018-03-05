@@ -16,12 +16,12 @@ namespace QuoteCalculator.Tests
 		[TestMethod]
 		public void GetCorrectQuote_ZeroLoanAmountAndZeroLoanMonths()
 		{
-			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<double>()))
+			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<decimal>()))
 				.Returns(new[] {
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12,
+						Rate = 0.12M,
 					}
 				});
 
@@ -38,12 +38,12 @@ namespace QuoteCalculator.Tests
 		[TestMethod]
 		public void GetCorrectQuote_OneOfferAndOneMonth()
 		{
-			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<double>()))
+			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<decimal>()))
 				.Returns(new[] {
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12,
+						Rate = 0.12M,
 					}
 				});
 
@@ -52,7 +52,7 @@ namespace QuoteCalculator.Tests
 			var result = quoteCalculator.GetQuote(100, 1);
 
 			Assert.AreEqual(100, result.LoanAmount, "Incorrect loan amount");
-			Assert.AreEqual(0.12, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
+			Assert.AreEqual(0.12M, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
 			Assert.AreEqual(101, result.MonthlyRepayment, "Incorrect monthly repayment");
 			Assert.AreEqual(101, result.TotalRepayment, "Incorrect total amount");
 		}
@@ -60,17 +60,17 @@ namespace QuoteCalculator.Tests
 		[TestMethod]
 		public void GetCorrectQuote_TwoIdenticalOffersAndOneMonth()
 		{
-			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<double>()))
+			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<decimal>()))
 				.Returns(new[] {
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12,
+						Rate = 0.12M,
 					},
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12
+						Rate = 0.12M
 					}
 				});
 
@@ -79,7 +79,7 @@ namespace QuoteCalculator.Tests
 			var result = quoteCalculator.GetQuote(200, 1);
 
 			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
-			Assert.AreEqual(0.12, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
+			Assert.AreEqual(0.12M, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
 			Assert.AreEqual(202, result.MonthlyRepayment, "Incorrect monthly repayment");
 			Assert.AreEqual(202, result.TotalRepayment, "Incorrect total amount");
 		}
@@ -87,17 +87,17 @@ namespace QuoteCalculator.Tests
 		[TestMethod]
 		public void GetCorrectQuote_TwoDifferentOffersAndOneMonth()
 		{
-			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<double>()))
+			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<decimal>()))
 				.Returns(new[] {
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12,
+						Rate = 0.12M,
 					},
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.24
+						Rate = 0.24M
 					}
 				});
 
@@ -106,7 +106,7 @@ namespace QuoteCalculator.Tests
 			var result = quoteCalculator.GetQuote(200, 1);
 
 			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
-			Assert.AreEqual(0.18, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
+			Assert.AreEqual(0.18M, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
 			Assert.AreEqual(203, result.MonthlyRepayment, "Incorrect monthly repayment");
 			Assert.AreEqual(203, result.TotalRepayment, "Incorrect total amount");
 		}
@@ -114,17 +114,17 @@ namespace QuoteCalculator.Tests
 		[TestMethod]
 		public void GetCorrectQuote_TwoDifferentOffersAndTwelveMonths()
 		{
-			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<double>()))
+			mockAllocationProvider.Setup(m => m.GetLoanAllocationsForAmount(It.IsAny<decimal>()))
 				.Returns(new[] {
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.12,
+						Rate = 0.12M,
 					},
 					new LoanAllocation
 					{
 						Amount = 100,
-						Rate = 0.24
+						Rate = 0.24M
 					}
 				});
 
@@ -133,9 +133,9 @@ namespace QuoteCalculator.Tests
 			var result = quoteCalculator.GetQuote(200, 12);
 
 			Assert.AreEqual(200, result.LoanAmount, "Incorrect loan amount");
-			Assert.AreEqual(0.18, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
-			Assert.AreEqual(19.67, Math.Round(result.MonthlyRepayment, 2), "Incorrect monthly repayment");
-			Assert.AreEqual(236, result.TotalRepayment, "Incorrect total amount");
+			Assert.AreEqual(0.18M, Math.Round(result.InterestRate, 2), "Incorrect interest rate");
+			Assert.AreEqual(19.67M, Math.Round(result.MonthlyRepayment, 2), "Incorrect monthly repayment");
+			Assert.AreEqual(236, Math.Round(result.TotalRepayment, 2), "Incorrect total amount");
 		}
 	}
 }

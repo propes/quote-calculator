@@ -2,9 +2,9 @@
 {
 	public class LoanQuote
 	{
-		public double LoanAmount { get; set; }
-		public double InterestRate { get; set; }
-		public double MonthlyRepayment { get; set; }
-		public double TotalRepayment { get; set; }
+		public decimal LoanAmount { get; set; }
+		public decimal InterestRate { get; set; }
+		public decimal MonthlyRepayment { get; set; }
+		public decimal TotalRepayment { get; set; }
 	}
 }

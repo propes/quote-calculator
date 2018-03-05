@@ -24,7 +24,7 @@ namespace QuoteCalculator
 		static void Main(string[] args)
 		{
 			string filename;
-			double loanAmount;
+			decimal loanAmount;
 			try
 			{
 				ParseArgs(args, out filename, out loanAmount);
@@ -52,7 +52,7 @@ namespace QuoteCalculator
 			iocContainer.Resolve<IQuotePrinter>().Print(quote);
 		}
 
-		static void ParseArgs(string[] args, out string filename, out double loanAmount)
+		static void ParseArgs(string[] args, out string filename, out decimal loanAmount)
 		{
 			if (args.Length != 2)
 			{
@@ -73,9 +73,9 @@ namespace QuoteCalculator
 			return value;
 		}
 
-		static double ParseLoanAmount(string value)
+		static decimal ParseLoanAmount(string value)
 		{
-			if (!double.TryParse(value, out var loanAmount))
+			if (!decimal.TryParse(value, out var loanAmount))
 			{
 				throw new Exception("Error: Loan amount must be a valid number greater than or equal to zero.");
 			}

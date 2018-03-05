@@ -5,6 +5,6 @@ namespace QuoteCalculator.Interfaces
 {
 	public interface ILoanAllocationProvider
 	{
-		IEnumerable<LoanAllocation> GetLoanAllocationsForAmount(double loanAmount);
+		IEnumerable<LoanAllocation> GetLoanAllocationsForAmount(decimal loanAmount);
 	}
 }

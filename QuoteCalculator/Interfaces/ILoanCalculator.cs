@@ -2,10 +2,10 @@
 {
 	public interface ILoanCalculator
 	{
-		double CalculateMonthlyPayment(double principal, double rate, double months);
+		decimal CalculateMonthlyPayment(decimal principal, decimal rate, decimal months);
 
-		double CalculateTotalPayment(double monthlyPayment, double months);
+		decimal CalculateTotalPayment(decimal monthlyPayment, decimal months);
 
-		double CalculateInterestRate(double principal, double monthlyPayment, double months);
+		decimal CalculateInterestRate(decimal principal, decimal monthlyPayment, decimal months);
 	}
 }

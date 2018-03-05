@@ -1,4 +1,5 @@
-﻿using QuoteCalculator.Exceptions;
+﻿using System;
+using QuoteCalculator.Exceptions;
 using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
 using System.Collections.Generic;
@@ -8,27 +9,21 @@ namespace QuoteCalculator
 {
 	public class LoanAllocationProvider : ILoanAllocationProvider
 	{
-		private readonly IEnumerable<LoanOffer> loanOffers;
+		private readonly Lazy<IEnumerable<LoanOffer>> loanOffers;
 
 		public LoanAllocationProvider(ILoanOfferRepository loanOfferRepository)
 		{
-			this.loanOffers = loanOfferRepository.GetLoanOffers();
+			loanOffers = new Lazy<IEnumerable<LoanOffer>>(loanOfferRepository.GetLoanOffers);
 		}
 
-		public bool FundsAreAvailable(double loanAmount)
+		public IEnumerable<LoanAllocation> GetLoanAllocationsForAmount(decimal loanAmount)
 		{
-			var totalAmountOffered = loanOffers.Sum(l => l.Amount);
-			return loanAmount <= totalAmountOffered;
-		}
-
-		public IEnumerable<LoanAllocation> GetLoanAllocationsForAmount(double loanAmount)
-		{
-			if (!FundsAreAvailable(loanAmount))
+			if (loanAmount > loanOffers.Value.Sum(o => o.Amount))
 			{
 				throw new FundsNotAvailableException();
 			}
 
-			var sortedLoanOffers = loanOffers.OrderBy(l => l.Rate);
+			var sortedLoanOffers = loanOffers.Value.OrderBy(l => l.Rate);
 			var loanAllocations = new List<LoanAllocation>();
 			var amountRemaining = loanAmount;
 

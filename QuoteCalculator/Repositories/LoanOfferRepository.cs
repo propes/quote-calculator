@@ -33,8 +33,8 @@ namespace QuoteCalculator.Repositories
 					var loanOffer = new LoanOffer
 					{
 						LenderName = columns[0],
-						Rate = double.Parse(columns[1]),
-						Amount = double.Parse(columns[2])
+						Rate = decimal.Parse(columns[1]),
+						Amount = decimal.Parse(columns[2])
 					};
 					loanOffers.Add(loanOffer);
 				}

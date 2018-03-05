@@ -5,25 +5,25 @@ namespace QuoteCalculator.Calculators
 {
 	public class CompoundMonthlyLoanCalculator : ILoanCalculator
 	{
-		private const double MonthsInYear = 12.0;
+		private const decimal MonthsInYear = 12M;
 
-		public double CalculateMonthlyPayment(double principal, double rate, double months)
+		public decimal CalculateMonthlyPayment(decimal principal, decimal rate, decimal months)
 		{
 			var monthlyRate = rate / MonthsInYear;
-			return principal * monthlyRate * Math.Pow(1 + monthlyRate, months) / (Math.Pow(1 + monthlyRate, months) - 1);
+			return principal * monthlyRate * (decimal)Math.Pow(1 + (double)monthlyRate, (double)months) / (decimal)(Math.Pow(1 + (double)monthlyRate, (double)months) - 1);
 		}
 
-		public double CalculateTotalPayment(double monthlyPayment, double months)
+		public decimal CalculateTotalPayment(decimal monthlyPayment, decimal months)
 		{
 			return monthlyPayment * months;
 		}
 
-		public double CalculateInterestRate(double principal, double monthlyPayment, double months)
+		public decimal CalculateInterestRate(decimal principal, decimal monthlyPayment, decimal months)
 		{
 			// Solve for rate interatively.
 			// Assume that rate will never be higher than 100 to avoid infinite looping.
 			// Assume that an accuracy of 2 DP is sufficient.
-			for (var rate = 0.0; rate < 100.0; rate += 0.0001)
+			for (var rate = 0M; rate < 100M; rate += 0.0001M)
 			{
 				var testMonthlyPayment = CalculateMonthlyPayment(principal, rate, months);
 				if (Math.Round(monthlyPayment, 2) == Math.Round(testMonthlyPayment, 2))

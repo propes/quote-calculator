@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace QuoteCalculator.Tests
 {
-	[TestClass()]
+	[TestClass]
 	public class LoanOfferCsvRepositoryTests
 	{
 		private const string Testfilepath = "TestFiles\\testfile.csv";
 
-		[TestMethod()]
+		[TestMethod]
 		public void GetLoanOffers_FileInCorrectFormat()
 		{
 			var repository = new LoanOfferCsvRepository(Testfilepath);
@@ -22,16 +22,16 @@ namespace QuoteCalculator.Tests
 
 			// Test the first record.
 			Assert.AreEqual("Bob", loanOffers.First().LenderName);
-			Assert.AreEqual(0.075, loanOffers.First().Rate);
+			Assert.AreEqual(0.075M, loanOffers.First().Rate);
 			Assert.AreEqual(640, loanOffers.First().Amount);
 
 			// Test the last record.
 			Assert.AreEqual("Angela", loanOffers.Last().LenderName);
-			Assert.AreEqual(0.071, loanOffers.Last().Rate);
+			Assert.AreEqual(0.071M, loanOffers.Last().Rate);
 			Assert.AreEqual(60, loanOffers.Last().Amount);
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void ThrowException_FileDoesNotExist()
 		{

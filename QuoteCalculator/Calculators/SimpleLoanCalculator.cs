@@ -4,17 +4,17 @@ namespace QuoteCalculator.Calculators
 {
 	public class SimpleLoanCalculator : ILoanCalculator
 	{
-		public double CalculateMonthlyPayment(double principal, double rate, double months)
+		public decimal CalculateMonthlyPayment(decimal principal, decimal rate, decimal months)
 		{
 			return months == 0 ? 0 : principal * (1 + rate / 12 * months) / months;
 		}
 
-		public double CalculateTotalPayment(double monthlyPayment, double months)
+		public decimal CalculateTotalPayment(decimal monthlyPayment, decimal months)
 		{
 			return monthlyPayment * months;
 		}
 
-		public double CalculateInterestRate(double principal, double monthlyAmount, double months)
+		public decimal CalculateInterestRate(decimal principal, decimal monthlyAmount, decimal months)
 		{
 			return months == 0 ? 0 : (monthlyAmount * months / principal - 1) * 12 / months;
 		}
