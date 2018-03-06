@@ -19,12 +19,11 @@ namespace QuoteCalculator.Tests
 			mockLoanOfferRepository.Setup(m => m.GetLoanOffers())
 				.Returns(new[]
 				{
-					new LoanOffer { Amount = 1000, Rate = 5M },
-					new LoanOffer { Amount = 2000, Rate = 6M }
+					new LoanOffer { Amount = 10000, Rate = 5M, ExposureLimit = 1000 }
 				});
 
 			var loanAllocator = new LoanAllocationProvider(mockLoanOfferRepository.Object);
-
+			
 			var loanAllocations = loanAllocator.GetLoanAllocationsForAmount(500).ToList();
 
 			Assert.AreEqual(1, loanAllocations.Count);
@@ -38,8 +37,8 @@ namespace QuoteCalculator.Tests
 			mockLoanOfferRepository.Setup(m => m.GetLoanOffers())
 				.Returns(new[]
 				{
-					new LoanOffer { Amount = 1000, Rate = 5M },
-					new LoanOffer { Amount = 2000, Rate = 6M }
+					new LoanOffer { Amount = 10000, Rate = 5M, ExposureLimit = 1000 },
+					new LoanOffer { Amount = 10000, Rate = 6M, ExposureLimit = 2000 }
 				});
 
 			var loanAllocator = new LoanAllocationProvider(mockLoanOfferRepository.Object);
@@ -57,9 +56,9 @@ namespace QuoteCalculator.Tests
 			mockLoanOfferRepository.Setup(m => m.GetLoanOffers())
 				.Returns(new[]
 				{
-					new LoanOffer { Amount = 500, Rate = 5M },
-					new LoanOffer { Amount = 500, Rate = 6M },
-					new LoanOffer { Amount = 500, Rate = 7M },
+					new LoanOffer { Amount = 10000, Rate = 5M, ExposureLimit = 500 },
+					new LoanOffer { Amount = 10000, Rate = 6M, ExposureLimit = 500 },
+					new LoanOffer { Amount = 10000, Rate = 7M, ExposureLimit = 500 },
 				});
 
 			var loanAllocator = new LoanAllocationProvider(mockLoanOfferRepository.Object);
@@ -79,9 +78,9 @@ namespace QuoteCalculator.Tests
 			mockLoanOfferRepository.Setup(m => m.GetLoanOffers())
 				.Returns(new[]
 				{
-					new LoanOffer { Amount = 500, Rate = 5M },
-					new LoanOffer { Amount = 500, Rate = 6M },
-					new LoanOffer { Amount = 500, Rate = 7M }
+					new LoanOffer { Amount = 10000, Rate = 5M, ExposureLimit = 500 },
+					new LoanOffer { Amount = 10000, Rate = 6M, ExposureLimit = 500 },
+					new LoanOffer { Amount = 10000, Rate = 7M, ExposureLimit = 500 }
 				});
 
 			var loanAllocator = new LoanAllocationProvider(mockLoanOfferRepository.Object);
@@ -99,9 +98,9 @@ namespace QuoteCalculator.Tests
 			mockLoanOfferRepository.Setup(m => m.GetLoanOffers())
 				.Returns(new[]
 				{
-					new LoanOffer { Amount = 500, Rate = 6M },
-					new LoanOffer { Amount = 300, Rate = 7M },
-					new LoanOffer { Amount = 200, Rate = 5M }
+					new LoanOffer { Amount = 10000, Rate = 6M, ExposureLimit = 500 },
+					new LoanOffer { Amount = 10000, Rate = 7M, ExposureLimit = 300 },
+					new LoanOffer { Amount = 10000, Rate = 5M, ExposureLimit = 200 }
 				});
 
 			var loanAllocator = new LoanAllocationProvider(mockLoanOfferRepository.Object);

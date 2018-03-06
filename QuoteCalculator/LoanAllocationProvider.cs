@@ -1,7 +1,7 @@
-﻿using System;
-using QuoteCalculator.Exceptions;
+﻿using QuoteCalculator.Exceptions;
 using QuoteCalculator.Interfaces;
 using QuoteCalculator.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,25 +23,20 @@ namespace QuoteCalculator
 				throw new FundsNotAvailableException();
 			}
 
-			var sortedLoanOffers = loanOffers.Value.OrderBy(l => l.Rate);
+			var sortedLoanOffers = loanOffers.Value.OrderBy(l => l.Rate).ToList();
 			var loanAllocations = new List<LoanAllocation>();
 			var amountRemaining = loanAmount;
 
-			foreach (var loanOffer in sortedLoanOffers)
+			using (var loanOfferEnumerator = sortedLoanOffers.GetEnumerator())
 			{
-				if (loanOffer.Amount <= amountRemaining)
+				while (amountRemaining > 0)
 				{
-					loanAllocations.Add(new LoanAllocation { Amount = loanOffer.Amount, Rate = loanOffer.Rate });
-					amountRemaining -= loanOffer.Amount;
-				}
-				else if (amountRemaining > 0)
-				{
-					loanAllocations.Add(new LoanAllocation { Amount = amountRemaining, Rate = loanOffer.Rate });
-					break;
-				}
-				else
-				{
-					break;
+					loanOfferEnumerator.MoveNext();
+					var loanOffer = loanOfferEnumerator.Current;
+					var loanAllocation = loanOffer.GetNextAllocation(amountRemaining);
+
+					loanAllocations.Add(loanAllocation);
+					amountRemaining -= loanAllocation.Amount;
 				}
 			}
 
